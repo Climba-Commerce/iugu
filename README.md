@@ -1,7 +1,7 @@
 Iugu
 ==============
 
-Descrição aqui
+Biblioteca com Mapeamento das funcionalidades mais utilizadas no Iugu de uma forma mais genérica com mapeamento de objetos para rápido desenvolvimento.
 
 Instalação
 ==============
@@ -11,7 +11,7 @@ composer require idealizetecnologia/iugu
 
 Como usar
 ==============
-Descrição aqui
+Em desenvolvimento do manual.
 
 Licença
 ==============
