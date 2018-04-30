@@ -18,9 +18,19 @@ class Iugu
     private $accountId;
     private $token;
     
-    public function __construct($accountId, $token){
+    /**
+     * Se definido, irá salvar todos os logs de requisição/resposta passados pela biblioteca
+     * @example nome_pasta/2018/04/30/iugu.log
+     * @var string $logsName
+     */
+    private $logsName;
+    
+    protected $logger;
+    
+    public function __construct($accountId, $token, $logsName=false){
         $this->accountId    = $accountId;
         $this->token        = $token;
+        $this->logsName     = $logsName;
     }
     
     public function postCharge(ChargeModel $charge){
@@ -132,6 +142,40 @@ class Iugu
         return \base64_encode($this->token.':');
     }
     
+
+    private function getLogger() {
+    	if (!$this->logger) {
+    		$this->logger = with(new \Monolog\Logger('Iugu'))->pushHandler(
+				new \Monolog\Handler\RotatingFileHandler($this->logsName)
+			);
+    	}
+    
+    	return $this->logger;
+    	
+    }
+    
+
+    private function createGuzzleLoggingMiddleware($messageFormat) {
+    	return \GuzzleHttp\Middleware::log(
+    			$this->getLogger(),
+    			new \GuzzleHttp\MessageFormatter($messageFormat)
+    			);
+    }
+    
+    private function createLoggingHandlerStack(array $messageFormats) {
+    	
+    	$stack = \GuzzleHttp\HandlerStack::create();
+    
+    	collect($messageFormats)->each(function ($messageFormat) use ($stack) {
+    		$stack->unshift(
+				$this->createGuzzleLoggingMiddleware($messageFormat)
+			);
+    	});
+    	
+		return $stack;
+		
+    }
+    
     /**
      * @param string $method
      * @param string $url
@@ -142,9 +186,17 @@ class Iugu
         
         try {
             
-            $data['headers']['Authorization'] = 'Basic '.$this->generateAuthorizationCode();
+            $data['headers']['Authorization'] 	= 'Basic '.$this->generateAuthorizationCode();
             
-            $client = new Client(['base_uri' => $this->baseUri, 'exceptions' => false]);
+            $clientParams 						= array();
+            $clientParams['base_uri'] 			= $this->baseUri;
+            $clientParams['exceptions'] 		= false;
+            
+            if ($this->logsName){
+	            $clientParams['handler'] 		= $this->createLoggingHandlerStack(['{method} {uri} HTTP/{version} {req_body}', 'Resposta: {code} - {res_body}']);
+            }
+            
+            $client = new Client($clientParams);
             
             return $this->generateStandardResponse($client->request($method, $url, $data));
             
