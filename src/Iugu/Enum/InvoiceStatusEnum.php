@@ -13,6 +13,7 @@ class InvoiceStatusEnum
     const PAID                    = 'paid';
     const DONE                    = 'done';
     const PARTIALLY_PAID          = 'partially_paid';
+    const IN_PROTEST              = 'in_protest';
     
     public static function getDescription($statusCode){
         
@@ -26,6 +27,7 @@ class InvoiceStatusEnum
             case static::PAID:              return 'Pago';
             case static::DONE:              return 'Concluído';
             case static::PARTIALLY_PAID:    return 'Pago Parcialmente';
+            case static::IN_PROTEST:        return 'Em Protesto';
         }
     
         return 'Desconhecido';
