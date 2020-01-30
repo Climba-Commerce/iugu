@@ -130,6 +130,7 @@ class Iugu
     private function populateJson($objeto){
         
         $objeto->id = $this->accountId;
+        $objeto->account_id = $this->accountId;
         
         return $objeto;
         
