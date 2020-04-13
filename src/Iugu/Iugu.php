@@ -123,6 +123,17 @@ class Iugu
         return $this->send('POST', 'accounts/configuration', $data);
         
     }
+
+    /**
+     * @return bool|StandardResponse
+     */
+    public function getAccountInformations(){
+
+        $data           = array();
+
+        return $this->send('GET', 'accounts/'.$this->accountId, $data);
+
+    }
     
     /**
      * Faz a população do json de acordo com os dados fornecidos para cada tipo de requisição
