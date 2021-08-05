@@ -99,5 +99,7 @@ class AccountConfigurationModel extends StandardModel
      * @var array
      */
     public $early_payment_discounts;
+
+    public $pix;
     
 }
