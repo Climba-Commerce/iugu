@@ -95,7 +95,7 @@ class InvoiceModel extends StandardModel
     public $subscription_id;
     
     /**
-     * Método de pagamento que será disponibilizado para esta Fatura ("all", "credit_card" ou "bank_slip"). 
+     * Método de pagamento que será disponibilizado para esta Fatura ("all", "credit_card" ou "bank_slip" ou "pix").
      * Obs: Caso esta Fatura esteja atrelada à uma Assinatura, a prioridade é herdar o valor atribuído na Assinatura; 
      * caso esta esteja atribuído o valor 'all', o sistema considerará o 'payable_with' da Fatura; 
      * se não, o sistema considerará o 'payable_with' da Assinatura.
