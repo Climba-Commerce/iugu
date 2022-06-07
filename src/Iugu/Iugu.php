@@ -60,9 +60,15 @@ class Iugu
         
     }
     
-    public function postRefundInvoice($invoiceId){
+    public function postRefundInvoice($invoiceId, $value = null){
+
+        $data = array();
+
+        if ($value){
+            $data['json']   = array('partial_value_refund_cents' => $value);
+        }
         
-        return $this->send('POST', "invoices/$invoiceId/refund");
+        return $this->send('POST', "invoices/$invoiceId/refund", $data);
         
     }
     
