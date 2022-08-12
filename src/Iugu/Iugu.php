@@ -77,6 +77,12 @@ class Iugu
         return $this->send('POST', "invoices/$invoiceId/capture");
         
     }
+
+    public function putCancelInvoice($invoiceId){
+
+        return $this->send('PUT', "invoices/$invoiceId/cancel");
+
+    }
     
     public function postPaymentToken(PaymentTokenModel $paymentToken){
         
