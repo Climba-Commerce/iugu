@@ -206,28 +206,21 @@ class Iugu
      * @param array $data
      * @return StandardResponse|boolean
      */
-    private function send($method, $url, $data=array()){
-        
-        try {
-            
-            $data['headers']['Authorization'] 	= 'Basic '.$this->generateAuthorizationCode();
-            
-            $clientParams 						= array();
-            $clientParams['base_uri'] 			= $this->baseUri;
-            $clientParams['exceptions'] 		= false;
-            
-            if ($this->logsName){
-	            $clientParams['handler'] 		= $this->createLoggingHandlerStack(['{method} {uri} HTTP/{version} {req_body}', 'Resposta: {code} - {res_body}']);
-            }
-            
-            $client = new Client($clientParams);
-            
-            return $this->generateStandardResponse($client->request($method, $url, $data));
-            
-        } catch (\Exception $e) {
-            return false;
+    private function send($method, $url, $data=array())
+    {
+        $data['headers']['Authorization'] 	= 'Basic '.$this->generateAuthorizationCode();
+
+        $clientParams 						= array();
+        $clientParams['base_uri'] 			= $this->baseUri;
+        $clientParams['exceptions'] 		= false;
+
+        if ($this->logsName){
+            $clientParams['handler'] 		= $this->createLoggingHandlerStack(['{method} {uri} HTTP/{version} {req_body}', 'Resposta: {code} - {res_body}']);
         }
+
+        $client = new Client($clientParams);
         
+        return $this->generateStandardResponse($client->request($method, $url, $data));
     }
     
     /**
